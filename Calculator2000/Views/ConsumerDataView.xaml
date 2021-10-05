@@ -1,0 +1,80 @@
+﻿<Page x:Class="Calculator2000.Views.ConsumerDataView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Calculator2000.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ConsumerDataView"
+      
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Background="{DynamicResource MaterialDesignPaper}"
+      TextElement.FontWeight="Medium"
+      TextElement.FontSize="14"
+      FontFamily="{materialDesign:MaterialDesignFont}" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Content="Név:"/>
+        <ComboBox
+            Grid.Row="0"
+            Grid.Column="1"
+            materialDesign:TextFieldAssist.SuffixText=""
+            IsEditable="True"
+            ItemsSource="{Binding DefaultConsumers}"
+            Text="{Binding Consumer.Name}"
+            SelectedItem="{Binding Consumer.Properties}"/>
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            Content="Feszültségszint:"/>
+        <ComboBox
+            Grid.Row="1"
+            Grid.Column="1"
+            materialDesign:TextFieldAssist.SuffixText=" V"
+            ItemsSource="{Binding Voltages}"
+            SelectedItem="{Binding Consumer.Properties.Voltage, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            Content="Teljesítmény:"/>
+        <TextBox 
+            Grid.Row="2"
+            Grid.Column="1"
+            materialDesign:TextFieldAssist.SuffixText=" W"
+            Text="{Binding Consumer.Properties.Power, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="Egyidejűségi tényező:"/>
+        <TextBox 
+            Grid.Row="3"
+            Grid.Column="1"
+            Text="{Binding Consumer.Properties.SimultanetyFactor, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label
+            Grid.Row="4"
+            Grid.Column="0"
+            Content="Mennyiség:"/>
+        <TextBox 
+            Grid.Row="4"
+            Grid.Column="1"
+            materialDesign:TextFieldAssist.SuffixText=" db"
+            Text="{Binding Consumer.Count, UpdateSourceTrigger=PropertyChanged}"/>
+    </Grid>
+</Page>

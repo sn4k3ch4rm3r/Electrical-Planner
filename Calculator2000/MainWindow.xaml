@@ -1,0 +1,64 @@
+﻿<Window x:Class="Calculator2000.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Calculator2000"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="600"
+
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Menu IsMainMenu="True" Grid.ColumnSpan="3">
+            <MenuItem Header="Fájl">
+                <MenuItem Header="Mentés" Click="SaveFile_Click"/>
+                <MenuItem Header="Mentés másként"/>
+                <MenuItem Header="Megnyitás" Click="OpenFile_Click"/>
+                <Separator />
+                <MenuItem Header="Nyomtatás"/>
+            </MenuItem>
+            <MenuItem Header="Beszúrás">
+                <MenuItem Header="Elosztó" Click="MenuItem_Click"/>
+                <MenuItem Header="Szoba" Click="MenuItem_Click"/>
+                <MenuItem Header="Fogyasztó" Click="MenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <TreeView
+            Grid.Column="0"
+            Grid.Row="1"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Name="Hierarchy"/>
+
+        <GridSplitter Grid.Row="1" Grid.Column="1" Margin="2,0,2,0"
+                    Width="2" Background="Gray" 
+                    VerticalAlignment="Stretch" 
+                    HorizontalAlignment="Center" />
+        <ScrollViewer
+            Grid.Row="1"
+            Grid.Column="2">
+            <Frame 
+                Name="DataInputView"
+                NavigationUIVisibility="Hidden" VerticalAlignment="Top">
+            </Frame>
+        </ScrollViewer>
+        
+    </Grid>
+</Window>
