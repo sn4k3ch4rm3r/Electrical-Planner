@@ -4,8 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Calculator2000.Views"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      mc:Ignorable="d" d:DesignWidth="800"
       Title="DistributionBoardDataView"
       
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -13,7 +12,7 @@
       Background="{DynamicResource MaterialDesignPaper}"
       TextElement.FontWeight="Medium"
       TextElement.FontSize="14"
-      FontFamily="{materialDesign:MaterialDesignFont}" VerticalAlignment="Center" HorizontalAlignment="Center">
+      FontFamily="{materialDesign:MaterialDesignFont}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="500.394">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,6 +20,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -90,7 +90,7 @@
             Grid.Row="5"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" m"
-            Text="{Binding DistributionBoard.Cable.Length}"/>
+            Text="{Binding DistributionBoard.CableLength}"/>
         <Label
             Grid.Row="6"
             Grid.Column="0"
@@ -99,7 +99,7 @@
             Grid.Row="6"
             Grid.Column="1"
             ItemsSource="{Binding Materials}"
-            SelectedItem="{Binding DistributionBoard.Cable.MaterialProperty}"/>
+            SelectedItem="{Binding DistributionBoard.CableMaterialProperty}"/>
         <Label
             Grid.Row="7"
             Grid.Column="0"
@@ -121,79 +121,89 @@
         <Label
             Grid.Row="9"
             Grid.Column="0"
-            Content="Kábel keresztmetszet:"/>
+            Content="Számolt feszültség esés:"/>
         <TextBox 
             Grid.Row="9"
             Grid.Column="1"
-            materialDesign:TextFieldAssist.SuffixText=" mm²"
-            IsEnabled="False"
-            Text="{Binding DistributionBoard.Cable.Diameter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            materialDesign:TextFieldAssist.SuffixText=" %"
+            IsEnabled="false"
+            Text="{Binding DistributionBoard.VoltageDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
             Grid.Row="10"
             Grid.Column="0"
-            Content="Áramérték:"/>
+            Content="Kábel keresztmetszet:"/>
         <TextBox 
             Grid.Row="10"
+            Grid.Column="1"
+            materialDesign:TextFieldAssist.SuffixText=" mm²"
+            IsEnabled="False"
+            Text="{Binding DistributionBoard.CableDiameter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label
+            Grid.Row="11"
+            Grid.Column="0"
+            Content="Áramérték:"/>
+        <TextBox 
+            Grid.Row="11"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" A"
             IsEnabled="False"
             Text="{Binding DistributionBoard.Current, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
-            Grid.Row="11"
+            Grid.Row="12"
             Grid.Column="0"
             Content="Méretezési áramérték:"/>
         <TextBox 
-            Grid.Row="11"
+            Grid.Row="12"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" A"
             IsEnabled="False"
             Text="{Binding DistributionBoard.ScaledCurrent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
-            Grid.Row="12"
+            Grid.Row="13"
             Grid.Column="0"
             Content="Biztosító értéke:"/>
         <TextBox 
-            Grid.Row="12"
+            Grid.Row="13"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" A"
             IsEnabled="False"
             Text="{Binding DistributionBoard.FuseCurrent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
-            Grid.Row="13"
+            Grid.Row="14"
             Grid.Column="0"
             Content="Teljesítmény:"/>
         <TextBox 
-            Grid.Row="13"
+            Grid.Row="14"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.UsedPower/1000, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding DistributionBoard.UsedPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
-            Grid.Row="14"
+            Grid.Row="15"
             Grid.Column="0"
             Content="Beépített teljesítmény:"/>
         <TextBox 
-            Grid.Row="14"
+            Grid.Row="15"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
             Text="{Binding DistributionBoard.TotalPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
-            Grid.Row="15"
+            Grid.Row="16"
             Grid.Column="0"
             Content="Méretezési teljesítmény:"/>
         <TextBox 
-            Grid.Row="15"
+            Grid.Row="16"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
             Text="{Binding DistributionBoard.ScaledPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
-            Grid.Row="16"
+            Grid.Row="17"
             Grid.Column="0"
             Content="Meddő teljesítmény:"/>
         <TextBox 
-            Grid.Row="16"
+            Grid.Row="17"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"

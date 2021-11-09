@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calculator2000.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,13 @@ namespace Calculator2000.Models
         public string ChemicalSymbol { get; }
         public string Name { get; }
         public double SpecificConductivity { get; }
+
+        public int MaxCurrent(int diameter)
+        {
+            if (ChemicalSymbol == "Cu")
+                return CableMaxCurrentDB.COPPER[diameter];
+            return CableMaxCurrentDB.ALUMINIUM[diameter];
+        }
 
         public override string ToString()
         {

@@ -35,6 +35,7 @@ namespace Calculator2000.Views
             {
                 3, 1
             };
+
         public DistributionBoardDataView(DistributionBoard distributionBoard)
         {
             InitializeComponent();

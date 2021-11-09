@@ -69,6 +69,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Data\CableMaxCurrentDB.cs" />
     <Compile Include="Data\MaterialProperties.cs" />
     <Compile Include="Models\ConsumerProperties.cs" />
     <Compile Include="Views\ConsumerDataView.xaml.cs">

@@ -19,7 +19,6 @@ namespace Calculator2000.Models
         public string Name { get; set; }
         public int Voltage { get; set; }
         public double Power { get; set; }
-        public int Count { get; set; } = 1;
         public double SimultanetyFactor { get; set; }
 
         public override string ToString()
