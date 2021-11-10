@@ -126,8 +126,8 @@
             Grid.Row="9"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" %"
-            IsEnabled="false"
-            Text="{Binding DistributionBoard.VoltageDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            IsEnabled="False"
+            Text="{Binding DistributionBoard.VoltageDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
         <Label
             Grid.Row="10"
             Grid.Column="0"
@@ -167,7 +167,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" A"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.FuseCurrent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding DistributionBoard.FuseCurrent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
         <Label
             Grid.Row="14"
             Grid.Column="0"

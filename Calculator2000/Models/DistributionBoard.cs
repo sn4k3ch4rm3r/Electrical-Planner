@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Calculator2000.Models
 {
-    public class DistributionBoard : Node
+    public class DistributionBoard : Node, INotifyPropertyChanged, IDataErrorInfo
     {
         private List<int> cableDiametersAllowed = new List<int>()
         {
@@ -23,27 +23,40 @@ namespace Calculator2000.Models
             10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125
         };
 
-        private double _Voltage = 400;
-        public double Voltage { get { return _Voltage; } set { _Voltage = value; } }
-        public double SimultanetyFactor { get; set; } = 0.6;
-        public double GrowthFactor { get; set; } = 1.3;
-        public double ReserveFactor { get; set; } = 1;
-        public double CableLength { get; set; } = 0;
-        public MaterialProperty CableMaterialProperty { get; set; } = MaterialProperties.COPPER;
-        public int Phase { get; set; } = 3;
-        public double MaximumVoltageDropAllowed { get; set; } = 0.8;
+        public double Voltage { get { return voltage; } set { voltage = value; UpdateProperties(); } }
+        public double SimultanetyFactor { get => simultanetyFactor; set { simultanetyFactor = value; UpdateProperties(); } }
+        public double GrowthFactor { get => growthFactor; set { growthFactor = value; UpdateProperties(); } }
+        public double ReserveFactor { get => reserveFactor; set { reserveFactor = value; UpdateProperties(); } }
+        public double CableLength { get => cableLength; set { cableLength = value; UpdateProperties(); } }
+        public MaterialProperty CableMaterialProperty { get => cableMaterialProperty; set { cableMaterialProperty = value; UpdateProperties(); } }
+        public int Phase { get => phase; set => phase = value; }
+        public double MaximumVoltageDropAllowed { get => maximumVoltageDropAllowed; set { maximumVoltageDropAllowed = value; UpdateProperties(); } }
 
-        private int _cableDiameter = 10;
-        
+        private double voltage = 400;
+        private int cableDiameter = 10;
+        private double simultanetyFactor = 0.6;
+        private double growthFactor = 1.3;
+        private double reserveFactor = 1;
+        private double cableLength = 0;
+        private MaterialProperty cableMaterialProperty = MaterialProperties.COPPER;
+        private int phase = 3;
+        private double maximumVoltageDropAllowed = 0.8;
+
         [JsonIgnore]
-        public int CableDiameter 
+        public int CableDiameter
         {
             get
             {
-                _cableDiameter = 10;
-                while (VoltageDrop > MaximumVoltageDropAllowed || FuseCurrent * 0.8 > CableMaterialProperty.MaxCurrent(_cableDiameter))
-                    _cableDiameter = cableDiametersAllowed[cableDiametersAllowed.IndexOf(_cableDiameter) + 1];
-                return _cableDiameter;
+                cableDiameter = 10;
+                while (VoltageDrop > MaximumVoltageDropAllowed || FuseCurrent * 0.8 > CableMaterialProperty.MaxCurrent(cableDiameter))
+                {
+                    int index = cableDiametersAllowed.IndexOf(cableDiameter) + 1;
+                    if (index > cableDiametersAllowed.Count-1)
+                        break;
+                    cableDiameter = cableDiametersAllowed[index];
+                }
+                OnPropertyChanged(new PropertyChangedEventArgs("VoltageDrop"));
+                return cableDiameter;
             }
         }
 
@@ -54,9 +67,9 @@ namespace Calculator2000.Models
             {
                 double drop;
                 if (Phase == 3)
-                    drop = (Math.Sqrt(3) * FuseCurrent * CableLength) / (_cableDiameter * CableMaterialProperty.SpecificConductivity);
+                    drop = (Math.Sqrt(3) * FuseCurrent * CableLength) / (cableDiameter * CableMaterialProperty.SpecificConductivity);
                 else
-                    drop = (2 * FuseCurrent * CableLength) / (_cableDiameter * CableMaterialProperty.SpecificConductivity);
+                    drop = (2 * FuseCurrent * CableLength) / (cableDiameter * CableMaterialProperty.SpecificConductivity);
                 return drop * 100 / Voltage;
             }
         }
@@ -73,8 +86,8 @@ namespace Calculator2000.Models
             }
         }
         [JsonIgnore]
-        public double ScaledCurrent 
-        { 
+        public double ScaledCurrent
+        {
             get
             {
                 if (Phase == 3)
@@ -89,9 +102,12 @@ namespace Calculator2000.Models
             get
             {
                 int curr = 10;
-                while(curr * 0.8 < ScaledCurrent)
+                while (curr * 0.8 < ScaledCurrent)
                 {
-                    curr = fuseCurrentAllowed[fuseCurrentAllowed.IndexOf(curr) + 1];
+                    int index = fuseCurrentAllowed.IndexOf(curr) + 1;
+                    if (index > fuseCurrentAllowed.Count - 1)
+                        break;
+                    curr = fuseCurrentAllowed[index];
                 }
                 return curr;
             }
@@ -108,9 +124,34 @@ namespace Calculator2000.Models
             }
         }
 
+        public string Error => null;
+
+        public string this[string columnName] 
+        {
+            get
+            {
+                if (columnName == "VoltageDrop" && VoltageDrop > MaximumVoltageDropAllowed)
+                    return "Túl nagy feszültség esés!";
+                if (columnName == "FuseCurrent" && ScaledCurrent > FuseCurrent)
+                    return "Nem elég nagy biztosíték!";
+                return null;
+            }
+        }
+
         public DistributionBoard() : base()
         {
             Name = "E.x";
+        }
+
+        private void UpdateProperties()
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs("Current"));
+            OnPropertyChanged(new PropertyChangedEventArgs("ScaledCurrent"));
+            OnPropertyChanged(new PropertyChangedEventArgs("FuseCurrent"));
+            OnPropertyChanged(new PropertyChangedEventArgs("Power"));
+            OnPropertyChanged(new PropertyChangedEventArgs("ScaledPower"));
+            OnPropertyChanged(new PropertyChangedEventArgs("CableDiameter"));
+            OnPropertyChanged(new PropertyChangedEventArgs("VoltageDrop"));
         }
     }
 }
