@@ -140,8 +140,9 @@ namespace Calculator2000.Models
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(PropertyChangedEventArgs e)
+        public void OnPropertyChanged(string propertyName)
         {
+            PropertyChangedEventArgs e = new PropertyChangedEventArgs(propertyName);
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, e);

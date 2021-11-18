@@ -38,17 +38,8 @@
             materialDesign:TextFieldAssist.SuffixText=""
             IsEditable="True"
             ItemsSource="{Binding DefaultRoomNames}"
+            Text="{Binding Room.Name}"
             SelectedItem="{Binding Room.Name}"/>
-        <!--<Label
-            Grid.Row="1"
-            Grid.Column="0"
-            Content="Elosztó:"/>
-        <ComboBox
-            Grid.Row="1"
-            Grid.Column="1"
-            materialDesign:TextFieldAssist.SuffixText=""
-            ItemsSource="{Binding EveryDistributionBox}"
-            SelectedItem="{Binding Room.Parent}"/>-->
         <Label
             Grid.Row="2"
             Grid.Column="0"

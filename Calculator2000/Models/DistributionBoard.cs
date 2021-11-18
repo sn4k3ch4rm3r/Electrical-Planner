@@ -29,7 +29,7 @@ namespace Calculator2000.Models
         public double ReserveFactor { get => reserveFactor; set { reserveFactor = value; UpdateProperties(); } }
         public double CableLength { get => cableLength; set { cableLength = value; UpdateProperties(); } }
         public MaterialProperty CableMaterialProperty { get => cableMaterialProperty; set { cableMaterialProperty = value; UpdateProperties(); } }
-        public int Phase { get => phase; set => phase = value; }
+        public int Phase { get => phase; set { phase = value; UpdateProperties(); }  }
         public double MaximumVoltageDropAllowed { get => maximumVoltageDropAllowed; set { maximumVoltageDropAllowed = value; UpdateProperties(); } }
 
         private double voltage = 400;
@@ -55,7 +55,7 @@ namespace Calculator2000.Models
                         break;
                     cableDiameter = cableDiametersAllowed[index];
                 }
-                OnPropertyChanged(new PropertyChangedEventArgs("VoltageDrop"));
+                OnPropertyChanged("VoltageDrop");
                 return cableDiameter;
             }
         }
@@ -145,13 +145,13 @@ namespace Calculator2000.Models
 
         private void UpdateProperties()
         {
-            OnPropertyChanged(new PropertyChangedEventArgs("Current"));
-            OnPropertyChanged(new PropertyChangedEventArgs("ScaledCurrent"));
-            OnPropertyChanged(new PropertyChangedEventArgs("FuseCurrent"));
-            OnPropertyChanged(new PropertyChangedEventArgs("Power"));
-            OnPropertyChanged(new PropertyChangedEventArgs("ScaledPower"));
-            OnPropertyChanged(new PropertyChangedEventArgs("CableDiameter"));
-            OnPropertyChanged(new PropertyChangedEventArgs("VoltageDrop"));
+            OnPropertyChanged("Current");
+            OnPropertyChanged("ScaledCurrent");
+            OnPropertyChanged("FuseCurrent");
+            OnPropertyChanged("Power");
+            OnPropertyChanged("ScaledPower");
+            OnPropertyChanged("CableDiameter");
+            OnPropertyChanged("VoltageDrop");
         }
     }
 }

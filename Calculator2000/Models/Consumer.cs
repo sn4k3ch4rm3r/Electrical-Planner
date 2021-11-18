@@ -10,19 +10,33 @@ namespace Calculator2000.Models
 {
     public class Consumer : Node
     {
+        private ConsumerProperties properties = new ConsumerProperties("Dugaszoló aljzat", 600, 230, 0.60);
+
         public override string Name
         {
             set
             {
                 Properties.Name = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("Name"));
+                TreeViewItem.Header = value;
+                OnPropertyChanged("Name");
+                OnPropertyChanged("Properties.Name");
             }
             get
             {
                 return Properties.Name;
             }
         }
-        public ConsumerProperties Properties { get; set; } = new ConsumerProperties("Dugaszoló aljzat", 600, 230, 0.60);
+        public ConsumerProperties Properties { get => properties; 
+            set 
+            {
+                properties = value;
+                OnPropertyChanged("Properties");
+                OnPropertyChanged("Properties.Name");
+                OnPropertyChanged("Properties.Voltage");
+                OnPropertyChanged("Properties.Power");
+                OnPropertyChanged("Properties.SimultanetyFactor");
+            } 
+        }
         public int Count { get; set; } = 1;
 
         [JsonIgnore]

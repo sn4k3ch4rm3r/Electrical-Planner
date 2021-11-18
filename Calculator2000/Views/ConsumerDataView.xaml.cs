@@ -23,6 +23,23 @@ namespace Calculator2000.Views
     {
         public Consumer Consumer { get; set; }
 
+        public string SelectedName
+        {
+            get
+            {
+                return Consumer.Name;
+            }
+            set
+            {
+                Consumer.Name = value;
+                ConsumerProperties consumer = DefaultConsumers.Find(x => x.Name == value);
+                if (consumer != null)
+                {
+                    Consumer.Properties = consumer;
+                }
+            }
+        }
+
         public List<int> Voltages { get; } = new List<int>()
             {
                 400, 230
@@ -46,6 +63,15 @@ namespace Calculator2000.Views
             new ConsumerProperties("Trilux SWFlow D2-L", 27, 230, 0.40),
             new ConsumerProperties("Tükörvilágító lámpa", 40, 230, 0.40)
         };
+
+        public List<string> DefaultConsumerNames
+        {
+            get
+            {
+                return DefaultConsumers.Select(x => x.Name).ToList();
+            }
+        }
+
         public ConsumerDataView(Consumer consumer)
         {
             InitializeComponent();

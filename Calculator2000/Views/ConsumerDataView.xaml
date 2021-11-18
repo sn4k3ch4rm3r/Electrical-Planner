@@ -37,9 +37,9 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=""
             IsEditable="True"
-            ItemsSource="{Binding DefaultConsumers}"
-            Text="{Binding Consumer.Name}"
-            SelectedItem="{Binding Consumer.Properties}"/>
+            ItemsSource="{Binding DefaultConsumerNames}"
+            Text="{Binding SelectedName}"
+            SelectedItem="{Binding SelectedName}"/>
         <Label
             Grid.Row="1"
             Grid.Column="0"
