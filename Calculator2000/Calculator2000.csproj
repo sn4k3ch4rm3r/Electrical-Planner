@@ -72,6 +72,7 @@
     <Compile Include="Data\CableMaxCurrentDB.cs" />
     <Compile Include="Data\MaterialProperties.cs" />
     <Compile Include="Models\ConsumerProperties.cs" />
+    <Compile Include="Models\RootNode.cs" />
     <Compile Include="Views\ConsumerDataView.xaml.cs">
       <DependentUpon>ConsumerDataView.xaml</DependentUpon>
     </Compile>

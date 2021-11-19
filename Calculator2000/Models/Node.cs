@@ -13,6 +13,7 @@ namespace Calculator2000.Models
 {
     [JsonConverter(typeof(JsonKnownTypesConverter<Node>))]
     [JsonKnownType(typeof(Node), "node")]
+    [JsonKnownType(typeof(RootNode), "root")]
     [JsonKnownType(typeof(DistributionBoard), "distribution")]
     [JsonKnownType(typeof(Room), "room")]
     [JsonKnownType(typeof(Consumer), "consumer")]
@@ -46,18 +47,18 @@ namespace Calculator2000.Models
 
         private TreeViewItem _TreeViewItem;
         [JsonIgnore]
-        public TreeViewItem TreeViewItem 
-        { 
-            get 
+        public TreeViewItem TreeViewItem
+        {
+            get
             {
                 if (_TreeViewItem == null)
                     _TreeViewItem = ToTreeViewItem();
                 return _TreeViewItem;
-            } 
+            }
             set
             {
                 _TreeViewItem = value;
-            } 
+            }
         }
         [JsonIgnore]
         public Guid GUID { get; }
@@ -110,7 +111,7 @@ namespace Calculator2000.Models
             }
         }
 
-        private TreeViewItem ToTreeViewItem()
+        public TreeViewItem ToTreeViewItem()
         {
             TreeViewItem treeViewItem = new TreeViewItem()
             {

@@ -29,14 +29,17 @@ namespace Calculator2000
         public MainWindow()
         {
             InitializeComponent();
-            rootNode = new Node();
             Hierarchy.SelectedItemChanged += TreeViewItem_Selected;
+            CreateNewFile();
         }
 
-        private void CreateNewFile()
+        private void CreateNewFile(Node root = null)
         {
-            rootNode = new Node();
+            rootNode = root == null ? new RootNode() : root;
             Hierarchy.Items.Clear();
+            TreeViewItem item = rootNode.ToTreeViewItem();
+            item.IsExpanded = true;
+            Hierarchy.Items.Add(item);
             DataInputView.Content = null;   
         }
 
@@ -70,14 +73,11 @@ namespace Calculator2000
             if(openFileDialog.ShowDialog() == true)
             {
                 string rawJson = File.ReadAllText(openFileDialog.FileName);
-                List<Node> nodes = JsonConvert.DeserializeObject<List<Node>>(rawJson);
-                CreateNewFile();
-                rootNode.Children = nodes;
-                rootNode.SetupAfterLoad();
-                foreach (Node child in rootNode.Children)
-                {
-                    Hierarchy.Items.Add(child.TreeViewItem);
-                }
+                //List<Node> nodes = JsonConvert.DeserializeObject<List<Node>>(rawJson);
+                Node root= JsonConvert.DeserializeObject<Node>(rawJson);
+                root.SetupAfterLoad();
+                CreateNewFile(root);
+                //rootNode.Children = nodes;
             }
         }
 
@@ -88,7 +88,7 @@ namespace Calculator2000
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(rootNode.Children));
+                File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(rootNode));
             }
         }
 
@@ -101,7 +101,7 @@ namespace Calculator2000
             {
                 case "Elosztó":
                     child = new DistributionBoard();
-                    if (selected == null)
+                    if (selected == null || parentNode == rootNode)
                         child.Name = $"E.{rootNode.Children.Count + 1}";
                     else if (parentNode.GetType() != typeof(DistributionBoard))
                         return;
@@ -122,10 +122,11 @@ namespace Calculator2000
 
             TreeViewItem childTreeViewItem = child.TreeViewItem;
 
-            if (selected == null)
+            if (selected == null || parentNode == rootNode)
             {
                 rootNode.AddChild(child);
-                Hierarchy.Items.Add(childTreeViewItem);
+                (Hierarchy.Items[0] as TreeViewItem).Items.Add(childTreeViewItem);
+                (Hierarchy.Items[0] as TreeViewItem).IsExpanded = true;
             }
             else
             {
@@ -139,16 +140,10 @@ namespace Calculator2000
         {
             TreeViewItem selected = (TreeViewItem)Hierarchy.SelectedItem;
             Node selectedNode = rootNode.FindNode(x => x.GUID.ToString() == selected.Tag.ToString());
-            if (selectedNode.Parent != rootNode)
-            {
-                (selected.Parent as TreeViewItem).Items.Remove(selected);
-                selectedNode.Parent.Children.Remove(selectedNode);
-            }
-            else 
-            { 
-                rootNode.Children.Remove(selectedNode);
-                Hierarchy.Items.Remove(Hierarchy.SelectedItem);
-            }
+            if (selectedNode == rootNode) return;
+
+            (selected.Parent as TreeViewItem).Items.Remove(selected);
+            selectedNode.Parent.Children.Remove(selectedNode);
             DataInputView.Content = null;
         }
     }
