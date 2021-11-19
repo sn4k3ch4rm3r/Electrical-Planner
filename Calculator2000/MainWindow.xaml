@@ -39,6 +39,7 @@
                 <MenuItem Header="Szoba" Click="MenuItem_Click"/>
                 <MenuItem Header="Fogyasztó" Click="MenuItem_Click"/>
             </MenuItem>
+            <MenuItem Header="Törlés" Click="DeleteSelected_Click"/>
         </Menu>
 
         <TreeView

@@ -128,5 +128,22 @@ namespace Calculator2000
                 selected.IsExpanded = true;
             }
         }
+
+        private void DeleteSelected_Click(object sender, RoutedEventArgs e)
+        {
+            TreeViewItem selected = (TreeViewItem)Hierarchy.SelectedItem;
+            Node selectedNode = rootNode.FindNode(x => x.GUID.ToString() == selected.Tag.ToString());
+            if (selectedNode.Parent != rootNode)
+            {
+                (selected.Parent as TreeViewItem).Items.Remove(selected);
+                selectedNode.Parent.Children.Remove(selectedNode);
+            }
+            else 
+            { 
+                rootNode.Children.Remove(selectedNode);
+                Hierarchy.Items.Remove(Hierarchy.SelectedItem);
+            }
+            DataInputView.Content = null;
+        }
     }
 }
