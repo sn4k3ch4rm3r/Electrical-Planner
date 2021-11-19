@@ -83,7 +83,13 @@ namespace Calculator2000
 
         private void SaveFile_Click(object sender, RoutedEventArgs e)
         {
-            File.WriteAllText("test.json", JsonConvert.SerializeObject(rootNode.Children));
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Json fájl (*.json)|*.json|Minden fájl (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(rootNode.Children));
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
