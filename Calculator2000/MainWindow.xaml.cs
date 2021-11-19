@@ -33,8 +33,21 @@ namespace Calculator2000
             Hierarchy.SelectedItemChanged += TreeViewItem_Selected;
         }
 
+        private void CreateNewFile()
+        {
+            rootNode = new Node();
+            Hierarchy.Items.Clear();
+            DataInputView.Content = null;   
+        }
+
+        private void NewFile_Click(object sender, RoutedEventArgs e)
+        {
+            CreateNewFile();
+        }
+
         private void TreeViewItem_Selected(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if ((TreeViewItem)Hierarchy.SelectedItem == null) return;
             Node selectedNode = rootNode.FindNode(x => x.GUID.ToString() == ((TreeViewItem)Hierarchy.SelectedItem).Tag.ToString());
             if(selectedNode.GetType() == typeof(DistributionBoard))
             {
@@ -58,9 +71,9 @@ namespace Calculator2000
             {
                 string rawJson = File.ReadAllText(openFileDialog.FileName);
                 List<Node> nodes = JsonConvert.DeserializeObject<List<Node>>(rawJson);
+                CreateNewFile();
                 rootNode.Children = nodes;
                 rootNode.SetupAfterLoad();
-                Hierarchy.Items.Clear();
                 foreach (Node child in rootNode.Children)
                 {
                     Hierarchy.Items.Add(child.TreeViewItem);

@@ -27,6 +27,7 @@
 
         <Menu IsMainMenu="True" Grid.ColumnSpan="3">
             <MenuItem Header="Fájl">
+                <MenuItem Header="Új" Click="NewFile_Click"/>
                 <MenuItem Header="Mentés" Click="SaveFile_Click"/>
                 <MenuItem Header="Mentés másként"/>
                 <MenuItem Header="Megnyitás" Click="OpenFile_Click"/>
