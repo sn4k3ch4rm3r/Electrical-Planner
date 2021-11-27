@@ -26,6 +26,11 @@ namespace Calculator2000
     public partial class MainWindow : Window
     {
         private Node rootNode;
+        public static Dictionary<string, List<Room>> Floors = new Dictionary<string, List<Room>>()
+        {
+            {"0", new List<Room>()}
+        };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -73,11 +78,9 @@ namespace Calculator2000
             if(openFileDialog.ShowDialog() == true)
             {
                 string rawJson = File.ReadAllText(openFileDialog.FileName);
-                //List<Node> nodes = JsonConvert.DeserializeObject<List<Node>>(rawJson);
                 Node root= JsonConvert.DeserializeObject<Node>(rawJson);
                 root.SetupAfterLoad();
                 CreateNewFile(root);
-                //rootNode.Children = nodes;
             }
         }
 
@@ -112,6 +115,8 @@ namespace Calculator2000
                     if (parentNode.GetType() != typeof(DistributionBoard))
                         return;
                     child = new Room();
+                    Floors["0"].Add(child as Room);
+                    (child as Room).UpdateHeader();
                     break;
                 case "Fogyasztó":
                     if(selected == null || parentNode.GetType() == typeof(Consumer))

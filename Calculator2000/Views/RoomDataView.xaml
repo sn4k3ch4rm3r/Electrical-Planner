@@ -26,6 +26,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Label
@@ -43,29 +44,37 @@
         <Label
             Grid.Row="2"
             Grid.Column="0"
-            Content="Teljesítmény:"/>
+            Content="Emelet:"/>
         <TextBox 
             Grid.Row="2"
+            Grid.Column="1"
+            Text="{Binding Room.Floor}"/>
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="Teljesítmény:"/>
+        <TextBox 
+            Grid.Row="3"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
             Text="{Binding Room.UsedPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
-            Grid.Row="3"
+            Grid.Row="4"
             Grid.Column="0"
             Content="Beépített teljesítmény:"/>
         <TextBox 
-            Grid.Row="3"
+            Grid.Row="4"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
             Text="{Binding Room.TotalPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label
-            Grid.Row="4"
+            Grid.Row="5"
             Grid.Column="0"
             Content="Meddő teljesítmény:"/>
         <TextBox 
-            Grid.Row="4"
+            Grid.Row="5"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"

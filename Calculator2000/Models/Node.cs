@@ -22,7 +22,7 @@ namespace Calculator2000.Models
         public const int COSFI = 1;
 
         private string _Name;
-        public virtual string Name { get { return _Name; } set { _Name = value; TreeViewItem.Header = value; } }
+        public virtual string Name { get { return _Name; } set { _Name = value; TreeViewItem.Header = ToString(); } }
         [JsonIgnore]
         public Node Parent { get; set; }
         public List<Node> Children { get; set; }
@@ -115,7 +115,7 @@ namespace Calculator2000.Models
         {
             TreeViewItem treeViewItem = new TreeViewItem()
             {
-                Header = this.Name,
+                Header = ToString(),
                 Tag = GUID.ToString()
             };
             foreach (Node child in Children)
@@ -148,6 +148,11 @@ namespace Calculator2000.Models
             {
                 PropertyChanged(this, e);
             }
+        }
+
+        public override string ToString()
+        {
+            return this.Name;
         }
     }
 }
