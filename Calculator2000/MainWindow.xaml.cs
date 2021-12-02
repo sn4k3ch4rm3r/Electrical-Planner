@@ -26,10 +26,7 @@ namespace Calculator2000
     public partial class MainWindow : Window
     {
         private Node rootNode;
-        public static Dictionary<string, List<Room>> Floors = new Dictionary<string, List<Room>>()
-        {
-            {"0", new List<Room>()}
-        };
+        public static Dictionary<string, List<Room>> Floors;
 
         public MainWindow()
         {
@@ -43,6 +40,7 @@ namespace Calculator2000
         {
             rootNode = root == null ? new RootNode() : root;
             Hierarchy.Items.Clear();
+            Floors = new Dictionary<string, List<Room>>() { {"0", new List<Room>()} };
             TreeViewItem item = rootNode.ToTreeViewItem();
             item.IsExpanded = true;
             SetEventHandlers(item);
