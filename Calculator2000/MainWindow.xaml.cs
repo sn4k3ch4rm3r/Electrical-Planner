@@ -43,7 +43,15 @@ namespace Calculator2000
             Floors = new Dictionary<string, List<Room>>() { {"0", new List<Room>()} };
             TreeViewItem item = rootNode.ToTreeViewItem();
             item.IsExpanded = true;
-            SetEventHandlers(item);
+            
+            if(root == null)
+                SetEventHandlers(item);
+            else
+            {
+                SetEventHandlersRecursively(item);
+                SetupRooms(rootNode);
+            }
+            
             Hierarchy.Items.Add(item);
             DataInputView.Content = null;   
         }
@@ -55,6 +63,29 @@ namespace Calculator2000
             item.Drop += ChildTreeViewItem_Drop;
             item.MouseMove += ChildTreeViewItem_MouseMove;
             item.MouseDown += ChildTreeViewItem_MouseDown;
+        }
+
+        private void SetEventHandlersRecursively(TreeViewItem item)
+        {
+            SetEventHandlers(item);
+            foreach (TreeViewItem child in item.Items)
+            {
+                SetEventHandlersRecursively(child);
+            }
+        }
+
+        private void SetupRooms(Node node)
+        {
+            if (node.GetType() == typeof(Room))
+            {
+                Room room = (Room)node;
+                Floors[room.Floor].Add(room);
+                room.UpdateHeader();
+            }
+            foreach (Node child in node.Children)
+            {
+                SetupRooms(child);
+            }
         }
 
         private void NewFile_Click(object sender, RoutedEventArgs e)
