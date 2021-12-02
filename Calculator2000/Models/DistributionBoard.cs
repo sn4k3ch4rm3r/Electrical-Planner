@@ -70,8 +70,19 @@ namespace Calculator2000.Models
                     drop = (Math.Sqrt(3) * FuseCurrent * CableLength) / (cableDiameter * CableMaterialProperty.SpecificConductivity);
                 else
                     drop = (2 * FuseCurrent * CableLength) / (cableDiameter * CableMaterialProperty.SpecificConductivity);
+
+                if (Parent.GetType() == typeof(RootNode))
+                    drop += (Parent as RootNode).UnmeasuredDrop + (Parent as RootNode).MeasuredDrop;
+                else
+                    drop += (Parent as DistributionBoard).VoltageDropV;
                 return drop * 100 / Voltage;
             }
+        }
+
+        [JsonIgnore]
+        public double VoltageDropV
+        {
+            get { return VoltageDrop * Voltage / 100; }
         }
 
         [JsonIgnore]

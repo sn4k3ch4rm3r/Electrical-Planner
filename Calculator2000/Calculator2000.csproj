@@ -82,6 +82,9 @@
     <Compile Include="Views\RoomDataView.xaml.cs">
       <DependentUpon>RoomDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RootNodeDataView.xaml.cs">
+      <DependentUpon>RootNodeDataView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,6 +106,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RoomDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RootNodeDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

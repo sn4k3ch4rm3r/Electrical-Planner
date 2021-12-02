@@ -68,7 +68,11 @@ namespace Calculator2000
         {
             if ((TreeViewItem)Hierarchy.SelectedItem == null) return;
             Node selectedNode = rootNode.FindNode(x => x.GUID.ToString() == ((TreeViewItem)Hierarchy.SelectedItem).Tag.ToString());
-            if(selectedNode.GetType() == typeof(DistributionBoard))
+            if(selectedNode.GetType() == typeof(RootNode))
+            {
+                DataInputView.Navigate(new RootNodeDataView((RootNode) selectedNode));
+            }
+            else if(selectedNode.GetType() == typeof(DistributionBoard))
             {
                 DataInputView.Navigate(new DistributionBoardDataView((DistributionBoard) selectedNode));
             }
