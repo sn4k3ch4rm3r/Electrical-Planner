@@ -93,7 +93,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" A"
             IsEnabled="False"
-            Text="{Binding RootNode.Current, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding RootNode.Current, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="7"
             Grid.Column="0"
@@ -103,7 +103,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
-            Text="{Binding RootNode.UsedPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding RootNode.UsedPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="8"
             Grid.Column="0"
@@ -113,6 +113,6 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
-            Text="{Binding RootNode.TotalPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding RootNode.TotalPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
     </Grid>
 </Page>

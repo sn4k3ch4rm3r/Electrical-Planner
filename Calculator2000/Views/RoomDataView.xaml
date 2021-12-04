@@ -58,7 +58,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
-            Text="{Binding Room.UsedPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding Room.UsedPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="4"
             Grid.Column="0"
@@ -68,7 +68,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
-            Text="{Binding Room.TotalPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding Room.TotalPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="5"
             Grid.Column="0"

@@ -127,7 +127,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" %"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.VoltageDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+            Text="{Binding DistributionBoard.VoltageDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, StringFormat=N2}"/>
         <Label
             Grid.Row="10"
             Grid.Column="0"
@@ -147,7 +147,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" A"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.Current, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding DistributionBoard.Current, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="12"
             Grid.Column="0"
@@ -157,7 +157,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" A"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.ScaledCurrent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding DistributionBoard.ScaledCurrent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="13"
             Grid.Column="0"
@@ -177,7 +177,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.UsedPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding DistributionBoard.UsedPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="15"
             Grid.Column="0"
@@ -187,7 +187,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.TotalPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding DistributionBoard.TotalPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="16"
             Grid.Column="0"
@@ -197,7 +197,7 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" W"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.ScaledPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Text="{Binding DistributionBoard.ScaledPower, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="17"
             Grid.Column="0"
