@@ -8,9 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-namespace Calculator2000.Properties
-{
+namespace Calculator2000.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -18,52 +19,89 @@ namespace Calculator2000.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Calculator2000.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to név;teljesítmény;feszültségszint;egyidejűségi tényező
+        ///Dugaszoló aljzat;600;230;0,6
+        ///Duralamp BT101N;36;230;0,4
+        ///Duralamp LC001;20;230;0,4
+        ///Eglo Turcona 60x60 felületre szerelhető;35;230;0,4
+        ///Gymled;286;230;0,9
+        ///Helios elszívó ventilátor DX200;34;230;0,4
+        ///Helios elszívó ventilátor DX400;71;230;0,4
+        ///Led szalag RGBW;18;230;0,4
+        ///Légkondícionáló;800;230;0,4
+        ///Menekülési útvonaljelző;10;230;1
+        ///Opple LEDpanel ;30;230;0,4
+        ///Trillux 74R WD2;19;230;0,4
+        ///Trilux 8851 RB/950-730 2G1S kültéri álló lámpa;10;230;0,4
+        ///Trilux [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string fogyasztok {
+            get {
+                return ResourceManager.GetString("fogyasztok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to név
+        ///Szoba
+        ///Háló
+        ///Előkészítő
+        ///Előtér
+        ///Konyha
+        ///Közlekedő
+        ///Mosdó
+        ///Mosókonyha
+        ///Öltöző
+        ///Raktár
+        ///WC
+        ///Zuhanyzó
+        ///.
+        /// </summary>
+        internal static string szobanevek {
+            get {
+                return ResourceManager.GetString("szobanevek", resourceCulture);
             }
         }
     }

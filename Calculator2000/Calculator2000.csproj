@@ -70,6 +70,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\CableMaxCurrentDB.cs" />
+    <Compile Include="Data\Defaults.cs" />
     <Compile Include="Data\MaterialProperties.cs" />
     <Compile Include="Models\ConsumerProperties.cs" />
     <Compile Include="Models\RootNode.cs" />
@@ -142,6 +143,12 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\fogyasztok.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\szobanevek.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

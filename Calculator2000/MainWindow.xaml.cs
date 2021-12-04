@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System.IO;
 using Calculator2000.Models;
 using Calculator2000.Views;
+using Calculator2000.Data;
 
 namespace Calculator2000
 {
@@ -31,6 +32,7 @@ namespace Calculator2000
         public MainWindow()
         {
             InitializeComponent();
+            Defaults.Init();
             Hierarchy.SelectedItemChanged += TreeViewItem_Selected;
             Hierarchy.AllowDrop = true;
             CreateNewFile();
@@ -137,6 +139,11 @@ namespace Calculator2000
             {
                 File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(rootNode));
             }
+        }
+        
+        private void EditDefaults_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "Resources");
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

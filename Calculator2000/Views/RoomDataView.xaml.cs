@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Calculator2000.Data;
 using Calculator2000.Models;
 
 namespace Calculator2000.Views
@@ -23,21 +24,13 @@ namespace Calculator2000.Views
     {
         public Room Room { get; set; }
 
-        public List<string> DefaultRoomNames { get; set; } = new List<string>()
+        public List<string> DefaultRoomNames
         {
-            "Szoba",
-            "Háló",
-            "Előkészítő",
-            "Előtér",
-            "Konyha",
-            "Közlekedő",
-            "Mosdó",
-            "Mosókonyha",
-            "Öltöző",
-            "Raktár",
-            "WC",
-            "Zuhanyzó"
-        };
+            get
+            {
+                return Defaults.RoomNames;
+            }
+        }
         public RoomDataView(Room room)
         {
             InitializeComponent();

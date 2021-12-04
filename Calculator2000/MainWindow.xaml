@@ -40,6 +40,7 @@
                 <MenuItem Header="Fogyasztó" Click="MenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="Törlés" Click="DeleteSelected_Click"/>
+            <MenuItem Header="Alapértelmezett Adatok" Click="EditDefaults_Click"/>
         </Menu>
 
         <TreeView

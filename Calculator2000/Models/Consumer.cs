@@ -10,7 +10,7 @@ namespace Calculator2000.Models
 {
     public class Consumer : Node
     {
-        private ConsumerProperties properties = new ConsumerProperties("Dugaszoló aljzat", 600, 230, 0.60);
+        private ConsumerProperties properties = Data.Defaults.Consumers[0].Clone();
 
         public override string Name
         {

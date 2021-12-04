@@ -25,5 +25,10 @@ namespace Calculator2000.Models
         {
             return Name;
         }
+
+        public ConsumerProperties Clone()
+        {
+            return new ConsumerProperties(this.Name, this.Power, this.Voltage, this.SimultanetyFactor);
+        }
     }
 }
