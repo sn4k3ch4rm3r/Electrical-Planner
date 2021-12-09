@@ -20,6 +20,7 @@ namespace Calculator2000.Models
                 TreeViewItem.Header = value;
                 OnPropertyChanged("Name");
                 OnPropertyChanged("Properties.Name");
+                OnUpdate();
             }
             get
             {
@@ -35,6 +36,7 @@ namespace Calculator2000.Models
                 OnPropertyChanged("Properties.Voltage");
                 OnPropertyChanged("Properties.Power");
                 OnPropertyChanged("Properties.SimultanetyFactor");
+                OnUpdate();
             } 
         }
         public int Count { get; set; } = 1;

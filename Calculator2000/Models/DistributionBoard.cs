@@ -163,6 +163,7 @@ namespace Calculator2000.Models
             OnPropertyChanged("ScaledPower");
             OnPropertyChanged("CableDiameter");
             OnPropertyChanged("VoltageDrop");
+            OnUpdate();
         }
     }
 }

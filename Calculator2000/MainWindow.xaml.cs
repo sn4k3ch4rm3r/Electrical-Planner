@@ -27,6 +27,8 @@ namespace Calculator2000
     public partial class MainWindow : Window
     {
         private Node rootNode;
+        private string currentFile;
+        private bool saved;
         public static Dictionary<string, List<Room>> Floors;
 
         public MainWindow()
@@ -41,6 +43,8 @@ namespace Calculator2000
         private void CreateNewFile(Node root = null)
         {
             rootNode = root == null ? new RootNode() : root;
+            (rootNode as RootNode).Updated = FileChanged;
+
             Hierarchy.Items.Clear();
             Floors = new Dictionary<string, List<Room>>() { {"0", new List<Room>()} };
             TreeViewItem item = rootNode.ToTreeViewItem();
@@ -55,7 +59,10 @@ namespace Calculator2000
             }
             
             Hierarchy.Items.Add(item);
-            DataInputView.Content = null;   
+            DataInputView.Content = null;
+
+            currentFile = null;
+            saved = true;
         }
 
         private void SetEventHandlers(TreeViewItem item)
@@ -127,20 +134,42 @@ namespace Calculator2000
                 Node root= JsonConvert.DeserializeObject<Node>(rawJson);
                 root.SetupAfterLoad();
                 CreateNewFile(root);
+                this.currentFile = openFileDialog.FileName;
+                this.Title = currentFile;
             }
         }
 
         private void SaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.currentFile != null)
+                Save(this.currentFile);
+            else
+                SaveAs();
+        }
+        private void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            SaveAs();
+        }
+
+        private void SaveAs()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Json fájl (*.json)|*.json|Minden fájl (*.*)|*.*";
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(rootNode));
+                this.currentFile = saveFileDialog.FileName;
+                Save(saveFileDialog.FileName);
             }
         }
-        
+
+        private void Save(string fileName)
+        {
+            File.WriteAllText(fileName, JsonConvert.SerializeObject(rootNode));
+            this.saved = true;
+            this.Title = this.currentFile;
+        }
+
         private void EditDefaults_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("explorer.exe", "Resources");
@@ -297,6 +326,13 @@ namespace Calculator2000
             (selected.Parent as TreeViewItem).Items.Remove(selected);
             selectedNode.Parent.Children.Remove(selectedNode);
             DataInputView.Content = null;
+        }
+
+        private void FileChanged()
+        {
+            if (saved)
+                this.Title += " *";
+            this.saved = false;
         }
     }
 }

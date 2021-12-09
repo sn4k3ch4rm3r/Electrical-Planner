@@ -29,7 +29,7 @@
             <MenuItem Header="Fájl">
                 <MenuItem Header="Új" Click="NewFile_Click"/>
                 <MenuItem Header="Mentés" Click="SaveFile_Click"/>
-                <MenuItem Header="Mentés másként"/>
+                <MenuItem Header="Mentés másként" Click="SaveAs_Click"/>
                 <MenuItem Header="Megnyitás" Click="OpenFile_Click"/>
                 <Separator />
                 <MenuItem Header="Nyomtatás"/>

@@ -51,6 +51,7 @@ namespace Calculator2000.Models
         public void UpdateHeader()
         {
             this.TreeViewItem.Header = this.ToString();
+            OnUpdate();
         }
     }
 }

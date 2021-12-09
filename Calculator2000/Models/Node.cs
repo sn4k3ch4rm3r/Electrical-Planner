@@ -154,5 +154,11 @@ namespace Calculator2000.Models
         {
             return this.Name;
         }
+
+        public virtual void OnUpdate()
+        {
+            if(Parent != null)
+                Parent.OnUpdate();
+        }
     }
 }

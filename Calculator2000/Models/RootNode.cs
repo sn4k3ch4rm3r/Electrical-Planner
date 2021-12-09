@@ -23,6 +23,9 @@ namespace Calculator2000.Models
         public double MeasuredDrop { get; set; } = 0;
 
         [JsonIgnore]
+        public Action Updated { get; set; }
+
+        [JsonIgnore]
         public string CablePart { get => cablePart; 
             set { 
                 cablePart = value; 
@@ -31,6 +34,7 @@ namespace Calculator2000.Models
                 OnPropertyChanged("CableMaterialProperty");
                 OnPropertyChanged("CableDiameter");
                 OnPropertyChanged("VoltageDrop");
+                OnUpdate();
             } 
         }
 
@@ -137,6 +141,14 @@ namespace Calculator2000.Models
             OnPropertyChanged("Current");
             OnPropertyChanged("TotalPower");
             OnPropertyChanged("UsedPower");
+            OnUpdate();
+        }
+
+        public override void OnUpdate()
+        {
+            if(Updated != null)
+                Updated.Invoke();
+            base.OnUpdate();
         }
     }
 }
