@@ -246,6 +246,7 @@ namespace Calculator2000
                 selected.IsExpanded = true;
             }
             childTreeViewItem.IsSelected = true;
+            FileChanged();
         }
 
         private Point _lastMouseDown;
