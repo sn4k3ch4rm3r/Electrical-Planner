@@ -28,7 +28,9 @@ namespace Calculator2000.Models
         public double GrowthFactor { get => growthFactor; set { growthFactor = value; UpdateProperties(); } }
         public double ReserveFactor { get => reserveFactor; set { reserveFactor = value; UpdateProperties(); } }
         public double CableLength { get => cableLength; set { cableLength = value; UpdateProperties(); } }
-        public MaterialProperty CableMaterialProperty { get => cableMaterialProperty; set { cableMaterialProperty = value; UpdateProperties(); } }
+        public string CableMaterial { get => cableMaterial; set { cableMaterial = value; UpdateProperties(); } }
+        [JsonIgnore]
+        public MaterialProperty CableMaterialProperty { get => MaterialProperties.Values[cableMaterial]; set { cableMaterial = value.ChemicalSymbol; UpdateProperties(); } }
         public int Phase { get => phase; set { phase = value; UpdateProperties(); }  }
         public double MaximumVoltageDropAllowed { get => maximumVoltageDropAllowed; set { maximumVoltageDropAllowed = value; UpdateProperties(); } }
 
@@ -38,7 +40,7 @@ namespace Calculator2000.Models
         private double growthFactor = 1.3;
         private double reserveFactor = 1;
         private double cableLength = 0;
-        private MaterialProperty cableMaterialProperty = MaterialProperties.COPPER;
+        private string cableMaterial = "Cu";
         private int phase = 3;
         private double maximumVoltageDropAllowed = 0.8;
 

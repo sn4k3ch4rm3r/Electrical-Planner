@@ -15,8 +15,10 @@ namespace Calculator2000.Models
 
         public int UnmeasuredDistance { get; set; } = 0;
         public int MeasuredDistance { get; set; } = 0;
-        public MaterialProperty UnmeasuredMaterial { get; set; } = MaterialProperties.COPPER;
-        public MaterialProperty MeasuredMaterial { get; set; } = MaterialProperties.COPPER;
+
+        public string UnmeasuredMaterial { get; set; } = "Cu";
+        public string MeasuredMaterial { get; set; } = "Cu";
+
         public int UnmeasuredDiameter { get; set; } = 16;
         public int MeasuredDiameter { get; set; } = 16;
         public double UnmeasuredDrop { get; set; } = 0;
@@ -64,17 +66,17 @@ namespace Calculator2000.Models
             set
             {
                 if (CablePart == "Mért fővezeték")
-                    MeasuredMaterial = value;
+                    MeasuredMaterial = value.ChemicalSymbol;
                 else
-                    UnmeasuredMaterial = value;
+                    UnmeasuredMaterial = value.ChemicalSymbol;
                 UpdateProperties();
             }
             get
             {
                 if (cablePart == "Mért fővezeték")
-                    return MeasuredMaterial;
+                    return MaterialProperties.Values[MeasuredMaterial];
                 else
-                    return UnmeasuredMaterial;
+                    return MaterialProperties.Values[UnmeasuredMaterial];
             }
         }
 
