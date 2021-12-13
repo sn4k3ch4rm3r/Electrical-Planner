@@ -63,6 +63,7 @@ namespace Calculator2000
 
             currentFile = null;
             saved = true;
+            Title = "Ismeretlen";
         }
 
         private void SetEventHandlers(TreeViewItem item)
