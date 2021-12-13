@@ -28,20 +28,33 @@ namespace Calculator2000
     {
         private Node rootNode;
         private string currentFile;
-        private bool saved;
+        private bool saved = true;
         public static Dictionary<string, List<Room>> Floors;
 
         public MainWindow()
         {
             InitializeComponent();
+            this.Closing += MainWindow_Closing;
             Defaults.Init();
             Hierarchy.SelectedItemChanged += TreeViewItem_Selected;
             Hierarchy.AllowDrop = true;
             CreateNewFile();
         }
 
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!saved && !ConfirmExit()) e.Cancel = true;
+        }
+
+        private bool ConfirmExit()
+        {
+            MessageBoxResult result = MessageBox.Show("A nem mentett változtatások el fognak veszni!\nBiztosan folytatod?", "Megerősítés", MessageBoxButton.OKCancel, MessageBoxImage.Warning, MessageBoxResult.Cancel);
+            return result == MessageBoxResult.OK;
+        }
+
         private void CreateNewFile(Node root = null)
         {
+            if (!saved && !ConfirmExit()) return; 
             rootNode = root == null ? new RootNode() : root;
             (rootNode as RootNode).Updated = FileChanged;
 
