@@ -198,6 +198,8 @@ namespace Calculator2000.Models
             OnPropertyChanged("ScaledPower");
             OnPropertyChanged("CableDiameter");
             OnPropertyChanged("VoltageDrop");
+            OnPropertyChanged("AutoCable");
+            OnPropertyChanged("AutoFuse");
             OnUpdate();
         }
     }

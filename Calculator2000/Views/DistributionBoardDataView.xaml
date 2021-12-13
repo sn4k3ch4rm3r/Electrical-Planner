@@ -14,6 +14,29 @@
       TextElement.FontSize="14"
       FontFamily="{materialDesign:MaterialDesignFont}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="500.394">
 
+    <Page.Resources>
+        <Style 
+            x:Key="EditedCable" 
+            TargetType="ComboBox"
+            BasedOn="{StaticResource MaterialDesignComboBox}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding DistributionBoard.AutoCable, Mode=OneWay}" Value="false">
+                    <Setter Property="BorderBrush" Value="DodgerBlue"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style 
+            x:Key="EditedFuse" 
+            TargetType="ComboBox"
+            BasedOn="{StaticResource MaterialDesignComboBox}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding DistributionBoard.AutoFuse, Mode=OneWay}" Value="false">
+                    <Setter Property="BorderBrush" Value="DodgerBlue"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -139,6 +162,7 @@
             ItemsSource="{Binding CableDiameters, Mode=OneTime}"
             SelectedValuePath="Key"
             DisplayMemberPath="Value"
+            Style="{StaticResource EditedCable}"
             SelectedValue="{Binding DistributionBoard.CableDiameter, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
         <Label
             Grid.Row="11"
@@ -171,6 +195,7 @@
             ItemsSource="{Binding FuseCurrents, Mode=OneTime}"
             SelectedValuePath="Key"
             DisplayMemberPath="Value"
+            Style="{StaticResource EditedFuse}"
             SelectedValue="{Binding DistributionBoard.FuseCurrent, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
         <Label
             Grid.Row="14"
