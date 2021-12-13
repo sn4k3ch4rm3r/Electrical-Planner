@@ -12,32 +12,53 @@ namespace Calculator2000.Models
     {
         private string cablePart = "Mért fővezeték";
         private double voltage = 400;
+        private int unmeasuredDistance = 0;
+        private int measuredDistance = 0;
+        private string unmeasuredMaterial = "Cu";
+        private string measuredMaterial = "Cu";
+        private int unmeasuredDiameter = 16;
+        private int measuredDiameter = 16;
 
-        public int UnmeasuredDistance { get; set; } = 0;
-        public int MeasuredDistance { get; set; } = 0;
+        public int UnmeasuredDistance { get => unmeasuredDistance; set { unmeasuredDistance = value; UpdateProperties(); } }
+        public int MeasuredDistance { get => measuredDistance; set { measuredDistance = value; UpdateProperties(); } }
+        public string UnmeasuredMaterial { get => unmeasuredMaterial; set { unmeasuredMaterial = value; UpdateProperties(); } }
+        public string MeasuredMaterial { get => measuredMaterial; set { measuredMaterial = value; UpdateProperties(); } }
+        public int UnmeasuredDiameter { get => unmeasuredDiameter; set { unmeasuredDiameter = value; UpdateProperties(); } }
+        public int MeasuredDiameter { get => measuredDiameter; set { measuredDiameter = value; UpdateProperties(); } }
 
-        public string UnmeasuredMaterial { get; set; } = "Cu";
-        public string MeasuredMaterial { get; set; } = "Cu";
+        [JsonIgnore]
+        public double UnmeasuredDrop
+        {
+            get
+            {
+                if(unmeasuredDistance == 0) return 0;
+                return (Math.Sqrt(3) * Current * UnmeasuredDistance) / (UnmeasuredDiameter * MaterialProperties.Values[UnmeasuredMaterial].SpecificConductivity);
+            }
+        }
 
-        public int UnmeasuredDiameter { get; set; } = 16;
-        public int MeasuredDiameter { get; set; } = 16;
-        public double UnmeasuredDrop { get; set; } = 0;
-        public double MeasuredDrop { get; set; } = 0;
+        [JsonIgnore]
+        public double MeasuredDrop
+        {
+            get
+            {
+                if (measuredDistance == 0) return 0;
+                return (Math.Sqrt(3) * Current * MeasuredDistance) / (MeasuredDiameter * MaterialProperties.Values[MeasuredMaterial].SpecificConductivity);
+            }
+        }
 
         [JsonIgnore]
         public Action Updated { get; set; }
 
         [JsonIgnore]
-        public string CablePart { get => cablePart; 
-            set { 
-                cablePart = value; 
+        public string CablePart
+        {
+            get => cablePart;
+            set
+            {
+                cablePart = value;
                 UpdateProperties();
-                OnPropertyChanged("Distance");
-                OnPropertyChanged("CableMaterialProperty");
-                OnPropertyChanged("CableDiameter");
-                OnPropertyChanged("VoltageDrop");
                 OnUpdate();
-            } 
+            }
         }
 
         [JsonIgnore]
@@ -101,16 +122,8 @@ namespace Calculator2000.Models
         }
 
         [JsonIgnore]
-        public double VoltageDrop
+        public double PartVoltageDrop
         {
-            set
-            {
-                if (CablePart == "Mért fővezeték")
-                    MeasuredDrop = value;
-                else
-                    UnmeasuredDrop = value;
-                UpdateProperties();
-            }
             get
             {
                 if (cablePart == "Mért fővezeték")
@@ -120,18 +133,27 @@ namespace Calculator2000.Models
             }
         }
 
+        [JsonIgnore]
+        public double VoltageDrop
+        {
+            get
+            {
+                return MeasuredDrop + UnmeasuredDrop;
+            }
+        }
+
         public double Voltage { get => voltage; set { voltage = value; UpdateProperties(); } }
-        
+
         [JsonIgnore]
         public double Current { get => UsedPower / (Math.Sqrt(3) * Voltage * 1); }
 
         [JsonIgnore]
-        public override double UsedPower 
-        { 
+        public override double UsedPower
+        {
             get
             {
                 return Children.Select(x => x as DistributionBoard).Sum(x => x.ScaledPower * x.SimultanetyFactor);
-            } 
+            }
         }
 
         public RootNode()
@@ -143,12 +165,16 @@ namespace Calculator2000.Models
             OnPropertyChanged("Current");
             OnPropertyChanged("TotalPower");
             OnPropertyChanged("UsedPower");
+            OnPropertyChanged("Distance");
+            OnPropertyChanged("CableMaterialProperty");
+            OnPropertyChanged("CableDiameter");
+            OnPropertyChanged("PartVoltageDrop");
             OnUpdate();
         }
 
         public override void OnUpdate()
         {
-            if(Updated != null)
+            if (Updated != null)
                 Updated.Invoke();
             base.OnUpdate();
         }

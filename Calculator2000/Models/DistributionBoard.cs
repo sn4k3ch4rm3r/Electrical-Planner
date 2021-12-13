@@ -13,15 +13,8 @@ namespace Calculator2000.Models
 {
     public class DistributionBoard : Node, INotifyPropertyChanged, IDataErrorInfo
     {
-        private List<int> cableDiametersAllowed = new List<int>()
-        {
-            10, 16, 20, 25, 35, 50, 70, 95
-        };
-
-        private List<int> fuseCurrentAllowed = new List<int>()
-        {
-            10, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125
-        };
+        private List<int> cableDiametersAllowed { get => Defaults.CableDiameters; }
+        private List<int> fuseCurrentAllowed {get => Defaults.FuseCurrents; }
 
         public double Voltage { get { return voltage; } set { voltage = value; UpdateProperties(); } }
         public double SimultanetyFactor { get => simultanetyFactor; set { simultanetyFactor = value; UpdateProperties(); } }
@@ -31,11 +24,12 @@ namespace Calculator2000.Models
         public string CableMaterial { get => cableMaterial; set { cableMaterial = value; UpdateProperties(); } }
         [JsonIgnore]
         public MaterialProperty CableMaterialProperty { get => MaterialProperties.Values[cableMaterial]; set { cableMaterial = value.ChemicalSymbol; UpdateProperties(); } }
-        public int Phase { get => phase; set { phase = value; UpdateProperties(); }  }
+        public int Phase { get => phase; set { phase = value; UpdateProperties(); } }
         public double MaximumVoltageDropAllowed { get => maximumVoltageDropAllowed; set { maximumVoltageDropAllowed = value; UpdateProperties(); } }
 
         private double voltage = 400;
         private int cableDiameter = 10;
+        private int fuseCurrent = 10;
         private double simultanetyFactor = 0.6;
         private double growthFactor = 1.3;
         private double reserveFactor = 1;
@@ -44,40 +38,94 @@ namespace Calculator2000.Models
         private int phase = 3;
         private double maximumVoltageDropAllowed = 0.8;
 
-        [JsonIgnore]
+
+        private int getCableDiameter()
+        {
+            int diameter = cableDiametersAllowed[0];
+            double drop = getVoltageDrop(diameter, FuseCurrent);
+
+            while (drop > MaximumVoltageDropAllowed || FuseCurrent * 0.8 > CableMaterialProperty.MaxCurrent(diameter))
+            {
+                int index = cableDiametersAllowed.IndexOf(diameter) + 1;
+                if (index > cableDiametersAllowed.Count - 1)
+                    break;
+                diameter = cableDiametersAllowed[index];
+                drop = getVoltageDrop(diameter, FuseCurrent);
+            }
+            return diameter;
+        }
+
+        private int getFuseCurrent()
+        {
+            int current = fuseCurrentAllowed[0];
+            while (current * 0.8 < ScaledCurrent)
+            {
+                int index = fuseCurrentAllowed.IndexOf(current) + 1;
+                if (index > fuseCurrentAllowed.Count - 1)
+                    break;
+                current = fuseCurrentAllowed[index];
+            }
+            return current;
+        }
+
+        private double getVoltageDrop(int cableDiameter, int fuseCurrent)
+        {
+            double drop;
+            if (Phase == 3)
+                drop = (Math.Sqrt(3) * fuseCurrent * CableLength) / (cableDiameter * CableMaterialProperty.SpecificConductivity);
+            else
+                drop = (2 * fuseCurrent * CableLength) / (cableDiameter * CableMaterialProperty.SpecificConductivity);
+
+            if (Parent.GetType() == typeof(RootNode))
+                drop += (Parent as RootNode).UnmeasuredDrop + (Parent as RootNode).MeasuredDrop;
+            else
+                drop += (Parent as DistributionBoard).VoltageDropV;
+            return drop * 100 / Voltage;
+        }
+
         public int CableDiameter
         {
             get
             {
-                cableDiameter = 10;
-                while (VoltageDrop > MaximumVoltageDropAllowed || FuseCurrent * 0.8 > CableMaterialProperty.MaxCurrent(cableDiameter))
-                {
-                    int index = cableDiametersAllowed.IndexOf(cableDiameter) + 1;
-                    if (index > cableDiametersAllowed.Count-1)
-                        break;
-                    cableDiameter = cableDiametersAllowed[index];
-                }
+                if(!AutoCable) return cableDiameter;
+
+                cableDiameter = getCableDiameter();
                 OnPropertyChanged("VoltageDrop");
                 return cableDiameter;
             }
+            set
+            {
+                AutoCable = value == -1;
+                cableDiameter = value;
+                UpdateProperties();
+            }
         }
+
+        public int FuseCurrent
+        {
+            get
+            {
+                if (!AutoFuse) return fuseCurrent;
+
+                return getFuseCurrent();
+            }
+            set
+            {
+                AutoFuse = value == -1;
+                fuseCurrent = value;
+                UpdateProperties();
+            }
+        }
+
+        public bool AutoCable { get; set; } = true;
+        public bool AutoFuse { get; set; } = true;
 
         [JsonIgnore]
         public double VoltageDrop
         {
             get
             {
-                double drop;
-                if (Phase == 3)
-                    drop = (Math.Sqrt(3) * FuseCurrent * CableLength) / (cableDiameter * CableMaterialProperty.SpecificConductivity);
-                else
-                    drop = (2 * FuseCurrent * CableLength) / (cableDiameter * CableMaterialProperty.SpecificConductivity);
-
-                if (Parent.GetType() == typeof(RootNode))
-                    drop += (Parent as RootNode).UnmeasuredDrop + (Parent as RootNode).MeasuredDrop;
-                else
-                    drop += (Parent as DistributionBoard).VoltageDropV;
-                return drop * 100 / Voltage;
+                return getVoltageDrop(cableDiameter, FuseCurrent);
             }
         }
 
@@ -109,22 +157,7 @@ namespace Calculator2000.Models
                     return ScaledPower / (Voltage * 2 * 1);
             }
         }
-        [JsonIgnore]
-        public double FuseCurrent
-        {
-            get
-            {
-                int curr = 10;
-                while (curr * 0.8 < ScaledCurrent)
-                {
-                    int index = fuseCurrentAllowed.IndexOf(curr) + 1;
-                    if (index > fuseCurrentAllowed.Count - 1)
-                        break;
-                    curr = fuseCurrentAllowed[index];
-                }
-                return curr;
-            }
-        }
+        
         [JsonIgnore]
         public double ReactivePower { get; }
 
@@ -143,10 +176,10 @@ namespace Calculator2000.Models
         {
             get
             {
-                if (columnName == "VoltageDrop" && VoltageDrop > MaximumVoltageDropAllowed)
-                    return "Túl nagy feszültség esés!";
-                if (columnName == "FuseCurrent" && ScaledCurrent > FuseCurrent)
-                    return "Nem elég nagy biztosíték!";
+                if (columnName == "CableDiameter" && CableDiameter < getCableDiameter())
+                    return "Túl kicsi keresztmetszet!";
+                if (columnName == "FuseCurrent" && FuseCurrent < getFuseCurrent())
+                    return "Túl kicsi biztosíték!";
                 return null;
             }
         }

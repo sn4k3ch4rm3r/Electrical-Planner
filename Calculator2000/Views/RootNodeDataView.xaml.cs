@@ -40,6 +40,7 @@ namespace Calculator2000.Views
                 "Mért fővezeték",
                 "Méretlen fővezeték"
             };
+        public List<int> CableDiameters { get => Defaults.CableDiameters; }
 
         public RootNodeDataView(RootNode rootNode)
         {

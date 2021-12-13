@@ -50,11 +50,12 @@
             Grid.Row="2"
             Grid.Column="0"
             Content="Kábel keresztmetszet:"/>
-        <TextBox 
+        <ComboBox 
             Grid.Row="2"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" mm²"
-            Text="{Binding RootNode.CableDiameter}"/>
+            ItemsSource="{Binding CableDiameters, Mode=OneTime}"
+            SelectedItem="{Binding RootNode.CableDiameter}"/>
         <Label
             Grid.Row="3"
             Grid.Column="0"
@@ -65,21 +66,22 @@
             ItemsSource="{Binding Materials}"
             SelectedItem="{Binding RootNode.CableMaterialProperty}"/>
         <Label
-            Grid.Row="4"
+            Grid.Row="5"
             Grid.Column="0"
             Content="Feszültség esés:"/>
         <TextBox 
-            Grid.Row="4"
+            Grid.Row="5"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" V"
-            Text="{Binding RootNode.VoltageDrop}"/>
+            IsEnabled="False"
+            Text="{Binding RootNode.PartVoltageDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         
         <Label
-            Grid.Row="5"
+            Grid.Row="4"
             Grid.Column="0"
             Content="Feszültségszint:"/>
         <ComboBox
-            Grid.Row="5"
+            Grid.Row="4"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" V"
             ItemsSource="{Binding Voltages}"

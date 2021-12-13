@@ -36,6 +36,9 @@ namespace Calculator2000.Views
                 3, 1
             };
 
+        public Dictionary<int, string> CableDiameters { get => Defaults.CableDiameterPicker; }
+        public Dictionary<int, string> FuseCurrents { get => Defaults.FusePicker; }
+
         public DistributionBoardDataView(DistributionBoard distributionBoard)
         {
             InitializeComponent();

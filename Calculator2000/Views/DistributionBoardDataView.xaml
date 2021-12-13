@@ -127,17 +127,19 @@
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" %"
             IsEnabled="False"
-            Text="{Binding DistributionBoard.VoltageDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True, StringFormat=N2}"/>
+            Text="{Binding DistributionBoard.VoltageDrop, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
         <Label
             Grid.Row="10"
             Grid.Column="0"
             Content="Kábel keresztmetszet:"/>
-        <TextBox 
+        <ComboBox
             Grid.Row="10"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" mm²"
-            IsEnabled="False"
-            Text="{Binding DistributionBoard.CableDiameter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            ItemsSource="{Binding CableDiameters, Mode=OneTime}"
+            SelectedValuePath="Key"
+            DisplayMemberPath="Value"
+            SelectedValue="{Binding DistributionBoard.CableDiameter, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
         <Label
             Grid.Row="11"
             Grid.Column="0"
@@ -162,12 +164,14 @@
             Grid.Row="13"
             Grid.Column="0"
             Content="Biztosító értéke:"/>
-        <TextBox 
+        <ComboBox 
             Grid.Row="13"
             Grid.Column="1"
             materialDesign:TextFieldAssist.SuffixText=" A"
-            IsEnabled="False"
-            Text="{Binding DistributionBoard.FuseCurrent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+            ItemsSource="{Binding FuseCurrents, Mode=OneTime}"
+            SelectedValuePath="Key"
+            DisplayMemberPath="Value"
+            SelectedValue="{Binding DistributionBoard.FuseCurrent, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
         <Label
             Grid.Row="14"
             Grid.Column="0"
