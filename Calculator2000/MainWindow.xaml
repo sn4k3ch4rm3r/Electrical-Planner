@@ -14,6 +14,29 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}" VerticalAlignment="Center" HorizontalAlignment="Center">
 
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="NewCommand_Executed"/>
+        <CommandBinding Command="Save" Executed="SaveCommand_Executed"/>
+        <CommandBinding Command="SaveAs" Executed="SaveAsCommand_Executed"/>
+        <CommandBinding Command="Open" Executed="OpenCommand_Executed"/>
+        <CommandBinding Command="Print" Executed="PrintCommand_Executed"/>
+      
+        <CommandBinding Command="{x:Static local:MainWindow.InsertDistributionCommand}" Executed="InsertDistributionCommand_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.InsertRoomCommand}" Executed="InsertRoomCommand_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.InsertConsumerCommand}" Executed="InsertConsumerCommand_Executed"/>
+
+        <CommandBinding Command="Delete" Executed="DeleteCommand_Executed"/>
+    </Window.CommandBindings>
+
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="SaveAs"/>
+        <KeyBinding Key="P" Modifiers="Ctrl" Command="Print"/>
+
+        <KeyBinding Key="E" Modifiers="Alt" Command="{x:Static local:MainWindow.InsertDistributionCommand}"/>
+        <KeyBinding Key="S" Modifiers="Alt" Command="{x:Static local:MainWindow.InsertRoomCommand}"/>
+        <KeyBinding Key="F" Modifiers="Alt" Command="{x:Static local:MainWindow.InsertConsumerCommand}"/>
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -27,19 +50,27 @@
 
         <Menu IsMainMenu="True" Grid.ColumnSpan="3">
             <MenuItem Header="Fájl">
-                <MenuItem Header="Új" Click="NewFile_Click"/>
-                <MenuItem Header="Mentés" Click="SaveFile_Click"/>
-                <MenuItem Header="Mentés másként" Click="SaveAs_Click"/>
-                <MenuItem Header="Megnyitás" Click="OpenFile_Click"/>
+                <MenuItem Header="Új" Command="New"/>
+                <Separator/>
+                <MenuItem Header="Mentés" Command="Save"/>
+                <MenuItem Header="Mentés másként" Command="SaveAs" InputGestureText="Ctrl+Shift+S"/>
+                <MenuItem Header="Megnyitás" Command="Open"/>
                 <Separator />
-                <MenuItem Header="Nyomtatás"/>
+                <MenuItem Header="Nyomtatás" Command="Print" InputGestureText="Ctrl+P"/>
+            </MenuItem>
+            <MenuItem Header="Szerkesztés">
+                <MenuItem Header="Törlés" Command="Delete"/>
+                <Separator/>
+                <MenuItem Header="Másolás" Command="Copy"/>
+                <MenuItem Header="Kivágás" Command="Cut"/>
+                <Separator/>
+                <MenuItem Header="Beillesztés" Command="Paste"/>
             </MenuItem>
             <MenuItem Header="Beszúrás">
-                <MenuItem Header="Elosztó" Click="MenuItem_Click"/>
-                <MenuItem Header="Szoba" Click="MenuItem_Click"/>
-                <MenuItem Header="Fogyasztó" Click="MenuItem_Click"/>
+                <MenuItem Header="_Elosztó"  Command="{x:Static local:MainWindow.InsertDistributionCommand}" InputGestureText="Alt+E"/>
+                <MenuItem Header="_Szoba"  Command="{x:Static local:MainWindow.InsertRoomCommand}" InputGestureText="Alt+S"/>
+                <MenuItem Header="_Fogyasztó"  Command="{x:Static local:MainWindow.InsertConsumerCommand}" InputGestureText="Alt+F"/>
             </MenuItem>
-            <MenuItem Header="Törlés" Click="DeleteSelected_Click"/>
             <MenuItem Header="Alapértelmezett Adatok" Click="EditDefaults_Click"/>
         </Menu>
 

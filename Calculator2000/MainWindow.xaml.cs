@@ -30,6 +30,9 @@ namespace Calculator2000
         private string currentFile;
         private bool saved = true;
         public static Dictionary<string, List<Room>> Floors;
+        public static readonly RoutedCommand InsertDistributionCommand = new RoutedCommand();
+        public static readonly RoutedCommand InsertRoomCommand = new RoutedCommand();
+        public static readonly RoutedCommand InsertConsumerCommand = new RoutedCommand();
 
         public MainWindow()
         {
@@ -111,11 +114,6 @@ namespace Calculator2000
             }
         }
 
-        private void NewFile_Click(object sender, RoutedEventArgs e)
-        {
-            CreateNewFile();
-        }
-
         private void TreeViewItem_Selected(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if ((TreeViewItem)Hierarchy.SelectedItem == null) return;
@@ -137,33 +135,6 @@ namespace Calculator2000
                 DataInputView.Navigate(new ConsumerDataView((Consumer)selectedNode));
             }
         }
-        
-        private void OpenFile_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Json fájl (*.json)|*.json|Minden fájl (*.*)|*.*";
-            if(openFileDialog.ShowDialog() == true)
-            {
-                string rawJson = File.ReadAllText(openFileDialog.FileName);
-                Node root= JsonConvert.DeserializeObject<Node>(rawJson);
-                root.SetupAfterLoad();
-                CreateNewFile(root);
-                this.currentFile = openFileDialog.FileName;
-                this.Title = currentFile;
-            }
-        }
-
-        private void SaveFile_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.currentFile != null)
-                Save(this.currentFile);
-            else
-                SaveAs();
-        }
-        private void SaveAs_Click(object sender, RoutedEventArgs e)
-        {
-            SaveAs();
-        }
 
         private void SaveAs()
         {
@@ -184,17 +155,12 @@ namespace Calculator2000
             this.Title = this.currentFile;
         }
 
-        private void EditDefaults_Click(object sender, RoutedEventArgs e)
+        private void InsertNode(string type)
         {
-            System.Diagnostics.Process.Start("explorer.exe", "Resources");
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            TreeViewItem selected = (TreeViewItem) Hierarchy.SelectedItem;
+            TreeViewItem selected = (TreeViewItem)Hierarchy.SelectedItem;
             Node child = null;
             Node parentNode = selected == null ? rootNode : rootNode.FindNode(x => x.GUID.ToString() == selected.Tag.ToString());
-            switch (((MenuItem) sender).Header)
+            switch (type)
             {
                 case "Elosztó":
                     child = new DistributionBoard();
@@ -206,25 +172,25 @@ namespace Calculator2000
                         child.Name = $"{parentNode.Name}.{parentNode.Children.Count + 1}";
                     break;
                 case "Szoba":
-                    if(parentNode.GetType() == typeof(Room))
+                    if (parentNode.GetType() == typeof(Room))
                     {
                         parentNode = parentNode.Parent;
                         selected = selected.Parent as TreeViewItem;
                     }
                     else if (parentNode.GetType() != typeof(DistributionBoard))
                         return;
-                    
+
                     child = new Room();
                     Floors["0"].Add(child as Room);
                     (child as Room).UpdateHeader();
                     break;
                 case "Fogyasztó":
-                    if(parentNode.GetType() == typeof(Consumer))
+                    if (parentNode.GetType() == typeof(Consumer))
                     {
                         parentNode = parentNode.Parent;
                         selected = selected.Parent as TreeViewItem;
                     }
-                    else if(selected == null)
+                    else if (selected == null)
                         return;
                     child = new Consumer();
                     break;
@@ -247,6 +213,11 @@ namespace Calculator2000
             }
             childTreeViewItem.IsSelected = true;
             FileChanged();
+        }
+
+        private void EditDefaults_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", "Resources");
         }
 
         private Point _lastMouseDown;
@@ -324,8 +295,48 @@ namespace Calculator2000
             }
         }
 
-        private void DeleteSelected_Click(object sender, RoutedEventArgs e)
+        private void FileChanged()
         {
+            if (saved)
+                this.Title += " *";
+            this.saved = false;
+        }
+
+
+        private void NewCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
+        {
+            CreateNewFile();
+        }
+        private void SaveCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
+        {
+            if (this.currentFile != null)
+                Save(this.currentFile);
+            else
+                SaveAs();
+        }
+        private void SaveAsCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
+        {
+            SaveAs();
+        }
+        private void OpenCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Json fájl (*.json)|*.json|Minden fájl (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string rawJson = File.ReadAllText(openFileDialog.FileName);
+                Node root = JsonConvert.DeserializeObject<Node>(rawJson);
+                root.SetupAfterLoad();
+                CreateNewFile(root);
+                this.currentFile = openFileDialog.FileName;
+                this.Title = currentFile;
+            }
+        }
+        private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
+
+        private void DeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
+        {
+            if (this.currentFile == null && this.saved) return;
             TreeViewItem selected = (TreeViewItem)Hierarchy.SelectedItem;
             Node selectedNode = rootNode.FindNode(x => x.GUID.ToString() == selected.Tag.ToString());
             if (selectedNode == rootNode) return;
@@ -341,13 +352,20 @@ namespace Calculator2000
             (selected.Parent as TreeViewItem).Items.Remove(selected);
             selectedNode.Parent.Children.Remove(selectedNode);
             DataInputView.Content = null;
+            FileChanged();
         }
 
-        private void FileChanged()
+        private void InsertDistributionCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
         {
-            if (saved)
-                this.Title += " *";
-            this.saved = false;
+            InsertNode("Elosztó");
+        }
+        private void InsertRoomCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            InsertNode("Szoba");
+        }
+        private void InsertConsumerCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            InsertNode("Fogyasztó");
         }
     }
 }
