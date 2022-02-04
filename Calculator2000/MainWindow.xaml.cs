@@ -117,7 +117,7 @@ namespace Calculator2000
         private void TreeViewItem_Selected(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if ((TreeViewItem)Hierarchy.SelectedItem == null) return;
-            Node selectedNode = rootNode.FindNode(x => x.GUID.ToString() == ((TreeViewItem)Hierarchy.SelectedItem).Tag.ToString());
+            Node selectedNode = FindNode((TreeViewItem)Hierarchy.SelectedItem);
             if(selectedNode.GetType() == typeof(RootNode))
             {
                 DataInputView.Navigate(new RootNodeDataView((RootNode) selectedNode));
@@ -159,7 +159,7 @@ namespace Calculator2000
         {
             TreeViewItem selected = (TreeViewItem)Hierarchy.SelectedItem;
             Node child = null;
-            Node parentNode = selected == null ? rootNode : rootNode.FindNode(x => x.GUID.ToString() == selected.Tag.ToString());
+            Node parentNode = selected == null ? rootNode : FindNode(selected);
             switch (type)
             {
                 case "Elosztó":
@@ -274,7 +274,7 @@ namespace Calculator2000
             if (Math.Abs(currentPosition.X - _lastMouseDown.X) > 10.0 || Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 10.0)
             {
                 TreeViewItem item = sender as TreeViewItem;
-                if(FindNode(item).GetType() == FindNode(draggedItem).Parent.GetType())
+                if(FindNode(draggedItem).AllowedParentTypes.Contains(FindNode(item).GetType()))
                 {
                     e.Effects = DragDropEffects.Move;
                 }
@@ -334,11 +334,11 @@ namespace Calculator2000
         }
         private void PrintCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
 
-        private void DeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
+        private void DeleteSelected()
         {
             if (this.currentFile == null && this.saved) return;
             TreeViewItem selected = (TreeViewItem)Hierarchy.SelectedItem;
-            Node selectedNode = rootNode.FindNode(x => x.GUID.ToString() == selected.Tag.ToString());
+            Node selectedNode = FindNode(selected);
             if (selectedNode == rootNode) return;
             if (selectedNode.GetType() == typeof(Room))
             {
@@ -355,6 +355,11 @@ namespace Calculator2000
             FileChanged();
         }
 
+        private void DeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
+        {
+            DeleteSelected();
+        }
+
         private void InsertDistributionCommand_Executed(object sender, ExecutedRoutedEventArgs e) 
         {
             InsertNode("Elosztó");
@@ -366,6 +371,52 @@ namespace Calculator2000
         private void InsertConsumerCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             InsertNode("Fogyasztó");
+        }
+
+        private void Copy()
+        {
+            Clipboard.Clear();
+            Clipboard.SetData("NodeJSON", JsonConvert.SerializeObject(FindNode(Hierarchy.SelectedItem as TreeViewItem)));
+        }
+
+        private Node GetNodeFromClipboard()
+        {
+            if (!Clipboard.ContainsData("NodeJSON")) return null;
+            return JsonConvert.DeserializeObject<Node>(Clipboard.GetData("NodeJSON").ToString());
+        }
+
+        private void CopyCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Copy();
+        }
+        private void CutCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Copy();
+            DeleteSelected();
+        }
+
+        private void PasteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            TreeViewItem selected = Hierarchy.SelectedItem as TreeViewItem;
+            Node selectedNode = FindNode(selected);
+
+            Node data = GetNodeFromClipboard();
+            
+            selectedNode.AddChild(data);
+            selectedNode.SetupAfterLoad();
+            selected.Items.Add(data.ToTreeViewItem());
+        }
+
+        private void EditCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            TreeViewItem selected = Hierarchy.SelectedItem as TreeViewItem;
+            e.CanExecute = selected != null && FindNode(selected).GetType() != typeof(RootNode);
+        }
+        private void PasteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            TreeViewItem selected = Hierarchy.SelectedItem as TreeViewItem;
+            Node node = GetNodeFromClipboard();
+            e.CanExecute = selected != null && node != null && node.AllowedParentTypes.Contains(FindNode(selected).GetType());
         }
     }
 }

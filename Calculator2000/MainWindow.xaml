@@ -25,7 +25,10 @@
         <CommandBinding Command="{x:Static local:MainWindow.InsertRoomCommand}" Executed="InsertRoomCommand_Executed"/>
         <CommandBinding Command="{x:Static local:MainWindow.InsertConsumerCommand}" Executed="InsertConsumerCommand_Executed"/>
 
-        <CommandBinding Command="Delete" Executed="DeleteCommand_Executed"/>
+        <CommandBinding Command="Delete" Executed="DeleteCommand_Executed" CanExecute="EditCommand_CanExecute"/>
+        <CommandBinding Command="Copy" Executed="CopyCommand_Executed" CanExecute="EditCommand_CanExecute"/>
+        <CommandBinding Command="Cut" Executed="CutCommand_Executed" CanExecute="EditCommand_CanExecute"/>
+        <CommandBinding Command="Paste" Executed="PasteCommand_Executed" CanExecute="PasteCommand_CanExecute"/>
     </Window.CommandBindings>
 
     <Window.InputBindings>

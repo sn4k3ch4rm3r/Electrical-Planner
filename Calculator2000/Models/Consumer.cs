@@ -60,6 +60,12 @@ namespace Calculator2000.Models
         public Consumer() : base()
         {
             Name = "Dugaszoló aljzat";
+            AllowedParentTypes = new List<Type>
+            {
+                typeof(RootNode),
+                typeof(DistributionBoard),
+                typeof(Room),
+            };
         }
 
         public override string ToString()

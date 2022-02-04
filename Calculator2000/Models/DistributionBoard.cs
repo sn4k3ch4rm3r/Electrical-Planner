@@ -187,6 +187,7 @@ namespace Calculator2000.Models
         public DistributionBoard() : base()
         {
             Name = "E.x";
+            AllowedParentTypes = new List<Type> { typeof(RootNode), typeof(DistributionBoard) };
         }
 
         private void UpdateProperties()

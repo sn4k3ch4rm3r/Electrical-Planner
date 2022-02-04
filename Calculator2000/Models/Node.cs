@@ -45,6 +45,9 @@ namespace Calculator2000.Models
             }
         }
 
+        [JsonIgnore]
+        public List<Type> AllowedParentTypes { get; protected set; }
+
         private TreeViewItem _TreeViewItem;
         [JsonIgnore]
         public TreeViewItem TreeViewItem

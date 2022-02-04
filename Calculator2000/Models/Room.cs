@@ -53,5 +53,10 @@ namespace Calculator2000.Models
             this.TreeViewItem.Header = this.ToString();
             OnUpdate();
         }
+
+        public Room()
+        {
+            AllowedParentTypes = new List<Type> { typeof(DistributionBoard) };
+        }
     }
 }
