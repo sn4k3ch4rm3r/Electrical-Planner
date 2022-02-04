@@ -22,6 +22,7 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding DistributionBoard.AutoCable, Mode=OneWay}" Value="false">
                     <Setter Property="BorderBrush" Value="DodgerBlue"/>
+                    <Setter Property="Background" Value="DarkSlateGray"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -32,6 +33,7 @@
             <Style.Triggers>
                 <DataTrigger Binding="{Binding DistributionBoard.AutoFuse, Mode=OneWay}" Value="false">
                     <Setter Property="BorderBrush" Value="DodgerBlue"/>
+                    <Setter Property="Background" Value="DarkSlateGray"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
