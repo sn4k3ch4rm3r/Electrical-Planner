@@ -105,8 +105,10 @@ namespace Calculator2000
             if (node.GetType() == typeof(Room))
             {
                 Room room = (Room)node;
+                if (!Floors.ContainsKey(room.Floor))
+                    Floors[room.Floor] = new List<Room>();
                 Floors[room.Floor].Add(room);
-                room.UpdateHeader();
+                room.OnUpdate();
             }
             foreach (Node child in node.Children)
             {
@@ -182,7 +184,7 @@ namespace Calculator2000
 
                     child = new Room();
                     Floors["0"].Add(child as Room);
-                    (child as Room).UpdateHeader();
+                    (child as Room).OnUpdate();
                     break;
                 case "Fogyasztó":
                     if (parentNode.GetType() == typeof(Consumer))
@@ -340,15 +342,7 @@ namespace Calculator2000
             TreeViewItem selected = (TreeViewItem)Hierarchy.SelectedItem;
             Node selectedNode = FindNode(selected);
             if (selectedNode == rootNode) return;
-            if (selectedNode.GetType() == typeof(Room))
-            {
-                string floor = (selectedNode as Room).Floor;
-                Floors[floor].Remove(selectedNode as Room);
-                foreach (Room room in Floors[floor])
-                {
-                    room.UpdateHeader();
-                }
-            }
+            selectedNode.RemoveRooms();
             (selected.Parent as TreeViewItem).Items.Remove(selected);
             selectedNode.Parent.Children.Remove(selectedNode);
             DataInputView.Content = null;
@@ -402,6 +396,7 @@ namespace Calculator2000
 
             Node data = GetNodeFromClipboard();
             
+            SetupRooms(data);
             selectedNode.AddChild(data);
             selectedNode.SetupAfterLoad();
             selected.Items.Add(data.ToTreeViewItem());

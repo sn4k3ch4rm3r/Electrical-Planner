@@ -114,6 +114,14 @@ namespace Calculator2000.Models
             }
         }
 
+        public virtual void RemoveRooms()
+        {
+            foreach (Node child in Children)
+            {
+                child.RemoveRooms();
+            }
+        }
+
         public TreeViewItem ToTreeViewItem()
         {
             TreeViewItem treeViewItem = new TreeViewItem()
@@ -160,7 +168,8 @@ namespace Calculator2000.Models
 
         public virtual void OnUpdate()
         {
-            if(Parent != null)
+            this.TreeViewItem.Header = this.ToString();
+            if (Parent != null)
                 Parent.OnUpdate();
         }
     }

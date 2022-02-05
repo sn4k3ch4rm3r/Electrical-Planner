@@ -49,6 +49,8 @@ namespace Calculator2000.Models
                 return TotalPower * Properties.SimultanetyFactor;
             }
         }
+
+        [JsonIgnore]
         public override double TotalPower
         {
             get
