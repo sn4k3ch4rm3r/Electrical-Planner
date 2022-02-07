@@ -72,7 +72,7 @@ namespace Calculator2000.Models
 
         public override string ToString()
         {
-            return Name;
+            return $"{Count} db - {base.ToString()}";
         }
     }
 }

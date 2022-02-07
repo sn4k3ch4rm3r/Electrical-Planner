@@ -96,6 +96,7 @@ namespace Calculator2000.Models
             child.Parent = this;
             this.Children.Add(child);
             this.RegisterChildForSearch(child);
+            OnUpdate();
             return child;
         }
 
@@ -163,7 +164,7 @@ namespace Calculator2000.Models
 
         public override string ToString()
         {
-            return this.Name;
+            return $"{this.Name} ({(TotalPower > 1000000 ? $"{Math.Round(this.TotalPower/1000000)} MW": $"{Math.Round(this.TotalPower/1000, 1)} kW")})";
         }
 
         public virtual void OnUpdate()

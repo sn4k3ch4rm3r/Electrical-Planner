@@ -48,7 +48,7 @@ namespace Calculator2000.Models
 
         public override string ToString()
         {
-            return $"{Floor}.{Number} {Name}";
+            return $"{Floor}.{Number} {base.ToString()}";
         }
 
         public override void RemoveRooms()

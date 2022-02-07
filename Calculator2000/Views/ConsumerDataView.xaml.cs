@@ -67,5 +67,15 @@ namespace Calculator2000.Views
             Consumer = consumer;
             DataContext = this;
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Consumer.OnUpdate();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Consumer.OnUpdate();
+        }
     }
 }
