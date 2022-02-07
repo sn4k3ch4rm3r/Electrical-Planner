@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Calculator2000.Data;
 using Newtonsoft.Json;
 
@@ -188,6 +189,13 @@ namespace Calculator2000.Models
         {
             Name = "E.x";
             AllowedParentTypes = new List<Type> { typeof(RootNode), typeof(DistributionBoard) };
+        }
+
+        public override TreeViewItem ToTreeViewItem()
+        {
+            TreeViewItem item = base.ToTreeViewItem();
+            item.Foreground = new SolidColorBrush(MaterialDesignColors.Recommended.CyanSwatch.Cyan300);
+            return item;
         }
 
         private void UpdateProperties()

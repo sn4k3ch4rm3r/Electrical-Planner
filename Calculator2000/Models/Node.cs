@@ -123,7 +123,7 @@ namespace Calculator2000.Models
             }
         }
 
-        public TreeViewItem ToTreeViewItem()
+        public virtual TreeViewItem ToTreeViewItem()
         {
             TreeViewItem treeViewItem = new TreeViewItem()
             {

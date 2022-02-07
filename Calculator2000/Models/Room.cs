@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 using Newtonsoft.Json;
 
 namespace Calculator2000.Models
@@ -58,6 +60,12 @@ namespace Calculator2000.Models
             {
                 room.OnUpdate();
             }
+        }
+        public override TreeViewItem ToTreeViewItem()
+        {
+            TreeViewItem item = base.ToTreeViewItem();
+            item.Foreground = new SolidColorBrush(MaterialDesignColors.Recommended.GreenSwatch.Green300);
+            return item;
         }
 
         public Room()
