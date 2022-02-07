@@ -50,6 +50,16 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        
+        <materialDesign:Snackbar
+            x:Name="NotificationSnack"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Bottom"
+            Grid.ColumnSpan="3"
+            Grid.Row="1"
+            Background="#212121"
+            Foreground="White"
+            Panel.ZIndex="10"/>
 
         <Menu IsMainMenu="True" Grid.ColumnSpan="3">
             <MenuItem Header="Fájl">
@@ -96,6 +106,5 @@
                 NavigationUIVisibility="Hidden" VerticalAlignment="Top">
             </Frame>
         </ScrollViewer>
-        
     </Grid>
 </Window>

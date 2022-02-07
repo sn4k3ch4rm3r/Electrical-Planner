@@ -13,11 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Newtonsoft.Json;
 using System.IO;
 using Calculator2000.Models;
 using Calculator2000.Views;
 using Calculator2000.Data;
+using MaterialDesignThemes.Wpf;
 
 namespace Calculator2000
 {
@@ -26,6 +28,8 @@ namespace Calculator2000
     /// </summary>
     public partial class MainWindow : Window
     {
+        public SnackbarMessageQueue SnackbarMessageQueue { get; } = new SnackbarMessageQueue(new TimeSpan(0, 0, 2));
+
         private Node rootNode;
         private string currentFile;
         private bool saved = true;
@@ -42,6 +46,22 @@ namespace Calculator2000
             Hierarchy.SelectedItemChanged += TreeViewItem_Selected;
             Hierarchy.AllowDrop = true;
             CreateNewFile();
+
+            NotificationSnack.MessageQueue = SnackbarMessageQueue;
+
+            //Autosave
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 1, 0);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if(!saved && this.currentFile != null)
+            {
+                Save(currentFile);
+            }
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -155,6 +175,8 @@ namespace Calculator2000
             File.WriteAllText(fileName, JsonConvert.SerializeObject(rootNode));
             this.saved = true;
             this.Title = this.currentFile;
+
+            SnackbarMessageQueue.Enqueue("Mentve");
         }
 
         private void InsertNode(string type)
