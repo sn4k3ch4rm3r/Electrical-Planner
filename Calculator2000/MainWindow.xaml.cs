@@ -171,7 +171,7 @@ namespace Calculator2000
                     else if (parentNode.GetType() != typeof(DistributionBoard))
                         return;
                     else
-                        child.Name = $"{parentNode.Name}.{parentNode.Children.Count + 1}";
+                        child.Name = $"{parentNode.Name}.{parentNode.Children.Count(x => x.GetType() == typeof(DistributionBoard)) + 1}";
                     break;
                 case "Szoba":
                     if (parentNode.GetType() == typeof(Room))
